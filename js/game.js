@@ -55,7 +55,7 @@ var Juego = (function () {
     }
 
     function manejarClickCarta(carta) {
-        if (bloqueado || carta === primeraCarta || carta.carta.className.indexOf('mostrada') !== -1) // se chekea si la carta es la primera, si l acarta ya esta mostrada o si el tablero esta bloqueado, si es asi, ignora el click
+        if (bloqueado || carta === primeraCarta || carta.className.indexOf('mostrada') !== -1) // se chekea si la carta es la primera, si l acarta ya esta mostrada o si el tablero esta bloqueado, si es asi, ignora el click
             { return; }                                                 // idenxOf, chekea si la palabra mostrada esta dentro del className de la carta, si es asi, significa que la carta ya fue mostrada y no se puede hacer click sobre ella
         
         revelarCarta(carta);
@@ -85,8 +85,6 @@ var Juego = (function () {
     function marcarEncontrada() {
         primeraCarta.className = 'carta mostrada';
         segundaCarta.className = 'carta mostrada';
-        primeraCarta.removeEventListener('click', manejarClicCarta); // se remueve el event listener para que no se pueda hacer click sobre la carta 
-        segundaCarta.removeEventListener('click', manejarClicCarta); // se remueve el event listener para que no se pueda hacer click sobre la carta 
         resetearCartas();
     }
 
