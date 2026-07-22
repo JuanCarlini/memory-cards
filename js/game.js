@@ -28,7 +28,11 @@ var Juego = (function () {
   var consecutivasEncontradas = 0;
   var consecutivasErradas = 0;
 
+  var historialConsecutivasEncontradas = 0;
+  var historialConsecutivasErradas = 0;
+
   var bloqueado = false;
+  var intentos = 0;
 
   // variables de puntajes
   var puntaje = 0;
@@ -107,6 +111,7 @@ var Juego = (function () {
 
   function sumarEncontradas() {
     consecutivasEncontradas++;
+    historialConsecutivasEncontradas++;
     consecutivasErradas = 0; // un acierto corta cualquier racha de errores
 
     var multiplicador = obtenerMultiplicadorRacha(consecutivasEncontradas);
@@ -116,6 +121,7 @@ var Juego = (function () {
 
   function restarError() {
     consecutivasErradas++;
+    historialConsecutivasErradas++;
     consecutivasEncontradas = 0; // un error corta cualquier racha de aciertos
 
     var multiplicador = obtenerMultiplicadorRacha(consecutivasErradas);
@@ -127,6 +133,25 @@ var Juego = (function () {
 
   function sumarBonoVictoria() {
     puntaje += BONO_VICTORIA;
+    mostrarPuntaje();
+  }
+
+  function sumarBonoTiempo() {
+    if (segundosTranscurridos < 20) {
+      puntaje += 1000;
+    }
+    else if (segundosTranscurridos < 30) {
+      puntaje += 500;
+    }
+    mostrarPuntaje();
+  }
+
+  function sumarBonoPorIntentos() {
+    var intentosMaximosParaBono = totalPares + 2; // usamos la cantidad de pares del nivel actual y agregamos un margen
+
+    if (intentos <= intentosMaximosParaBono) {
+      puntaje += 500; // si el jugador gana con menos intentos se le da un bono
+    }
     mostrarPuntaje();
   }
 
@@ -160,8 +185,10 @@ var Juego = (function () {
     if (primeraCarta.getAttribute('data-valor') === segundaCarta.getAttribute('data-valor')) {
       sumarEncontradas();
       marcarEncontrada();
+      intentos++; // sumamos un intento cada vez que se hace click en una carta, ya sea que acierte o falle
     } else {
       restarError();
+      intentos++; // sumamos un intento cada vez que se hace click en una carta, ya sea que acierte o falle
       setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
     }
   }
@@ -201,11 +228,14 @@ var Juego = (function () {
     detenerTemporizador();
     sumarBonoVictoria();
     restarSegundosTranscurridos();
+    sumarBonoTiempo();
+    sumarBonoPorIntentos();
+
+    historialConsecutivasEncontradas = 0;
+    historialConsecutivasErradas = 0;
 
     var mensaje = document.getElementById('mensaje-victoria');
-    // ahora el mensaje incluye jugador y nivel, antes solo mostraba puntos y tiempo
-    mensaje.textContent = nombreJugador + ' ganó jugando en nivel ' + dificultadActual +
-      '! Puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's';
+    mensaje.textContent = 'Ganaste! puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's';
     document.getElementById('modal-victoria').classList.remove('oculto');
   }
 
@@ -225,6 +255,9 @@ var Juego = (function () {
 
     consecutivasEncontradas = 0;
     consecutivasErradas = 0;
+    intentos = 0; 
+    historialConsecutivasEncontradas = 0;
+    historialConsecutivasErradas = 0;
 
     bloqueado = false;
 
