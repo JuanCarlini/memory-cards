@@ -15,10 +15,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function iniciarPartida() {
     var nombre = document.getElementById('nombre-jugador').value.trim();
+    var dificultad = document.getElementById('dificultad').value;
+
     if (!Validaciones.validarNombre(nombre)) {
       mostrarError('El nombre debe tener al menos 3 caracteres.');
       return false;
     }
+
+    // chequeo extra por si algun dia agregan un nivel sin cargar suficientes banderas
+    if (!Juego.hayCartasSuficientes(dificultad)) {
+      mostrarError('No hay suficientes cartas cargadas para este nivel.');
+      return false;
+    }
+
     errorInicio.classList.add('oculto');
     return true;
   }
