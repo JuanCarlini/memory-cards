@@ -35,6 +35,8 @@ var Juego = (function () {
   var paresEncontrados = 0;
   var totalPares = 0;
 
+  var temporizadorOcultar = null; // guarda el id del setTimeout que tapa las cartas, para poder cancelarlo si reinician a mitad de camino
+
   // Función para mezclar las cartas
   function mezclarCartas(mazo) {
     var i, j, temp;
@@ -51,7 +53,22 @@ var Juego = (function () {
     var cantidadCartas = Niveles[dificultad] || Niveles.facil; // Valor por defecto facil
     var banderasUtilizadas = cartasBase.slice(0, cantidadCartas);
     var mazo = banderasUtilizadas.concat(banderasUtilizadas); // Duplicar las cartas para tener los pares
+
+    // esto en teoria nunca puede pasar porque siempre duplicamos el mismo array,
+    // pero el profe pide chequear que la cantidad de cartas sea par asi que lo dejamos
+    if (mazo.length % 2 !== 0) {
+      mazo.pop();
+    }
+
     return mezclarCartas(mazo);
+  }
+
+  // chequea que tengamos suficientes banderas cargadas para armar los pares del nivel elegido
+  // (hoy con los 3 niveles fijos nunca falla, pero si mañana agregan un nivel mas grande sin
+  // cargar mas banderas, esto frena el inicio en vez de que el tablero quede raro/incompleto)
+  function hayCartasSuficientes(dificultad) {
+    var cantidadNecesaria = Niveles[dificultad] || Niveles.facil;
+    return cantidadNecesaria <= cartasBase.length;
   }
 
   function mostrarTablero(mazo) {
@@ -128,7 +145,7 @@ var Juego = (function () {
       marcarEncontrada();
     } else {
       restarError();
-      setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
+      temporizadorOcultar = setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
     }
   }
 
@@ -160,6 +177,7 @@ var Juego = (function () {
     primeraCarta = null;
     segundaCarta = null;
     bloqueado = false;
+    temporizadorOcultar = null; // ya se uso o ya lo cancelamos, no queda nada pendiente
   }
 
   function finalizarJuego() {
@@ -176,6 +194,14 @@ var Juego = (function () {
 
     if (nombre) {
       nombreJugador = nombre; // solo lo pisamos si vino un nombre nuevo (al reiniciar se mantiene el mismo)
+    }
+
+    // si reinician justo cuando dos cartas erroneas estaban esperando para taparse, hay que
+    // cancelar ese setTimeout viejo, sino termina ejecutandose sobre cartas que ya no existen
+    // en el tablero nuevo y tira error (probado a proposito, pasaba antes de este chequeo)
+    if (temporizadorOcultar) {
+      clearTimeout(temporizadorOcultar);
+      temporizadorOcultar = null;
     }
 
     dificultadActual = dificultad;
@@ -199,7 +225,8 @@ var Juego = (function () {
   }
 
   return {
-    iniciarJuego: iniciarJuego
-  }; // expone iniciarJuego
+    iniciarJuego: iniciarJuego,
+    hayCartasSuficientes: hayCartasSuficientes
+  }; // expone iniciarJuego y el chequeo de cartas suficientes, para usarlos desde main.js
 
 })();
