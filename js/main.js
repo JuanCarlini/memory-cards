@@ -1,5 +1,7 @@
 'use strict';
 
+// este archivo es el que inicializa todo: espera a que cargue el html, engancha los
+// listeners de los botones/formulario, y llama a las funciones de Juego/Validaciones/Sonidos
 document.addEventListener('DOMContentLoaded', function () {
   var formInicio = document.getElementById('form-inicio');
   var errorInicio = document.getElementById('error-inicio');
@@ -7,12 +9,16 @@ document.addEventListener('DOMContentLoaded', function () {
   var pantallaJuego = document.getElementById('pantalla-juego');
   var btnReiniciar = document.getElementById('btn-reiniciar');
   var btnJugarDeNuevo = document.getElementById('btn-jugar-de-nuevo');
+  var btnSonido = document.getElementById('btn-sonido');
 
+  // muestra el mensaje de error de la pantalla de inicio (sin usar alert)
   function mostrarError(mensaje) {
     errorInicio.textContent = mensaje;
     errorInicio.classList.remove('oculto');
   }
 
+  // valida el nombre y la dificultad elegida antes de dejar arrancar la partida.
+  // si algo esta mal, muestra el error y devuelve false para frenar el submit
   function iniciarPartida() {
     var nombre = document.getElementById('nombre-jugador').value.trim();
     var dificultad = document.getElementById('dificultad').value;
@@ -32,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
+  // cuando mandan el formulario de inicio: si esta todo bien, esconde la pantalla de
+  // inicio, muestra la del juego y arranca la partida
   formInicio.addEventListener('submit', function (evento) {
     var nombre = document.getElementById('nombre-jugador').value.trim();
     evento.preventDefault();
@@ -41,7 +49,14 @@ document.addEventListener('DOMContentLoaded', function () {
     Juego.iniciarJuego(nombre);
   });
 
+  // el boton de reiniciar y el de "jugar de nuevo" del modal hacen exactamente lo mismo:
+  // vuelven a armar el tablero sin pedir el nombre otra vez
   btnReiniciar.addEventListener('click', Juego.iniciarJuego);
-
   btnJugarDeNuevo.addEventListener('click', Juego.iniciarJuego);
+
+  // prende/apaga los sonidos y actualiza el texto del boton para que se vea el estado actual
+  btnSonido.addEventListener('click', function () {
+    var activos = Sonidos.alternarActivos();
+    btnSonido.textContent = activos ? '🔊 Sonido activado' : '🔇 Sonido desactivado';
+  });
 });
