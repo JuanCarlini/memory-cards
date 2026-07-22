@@ -5,6 +5,23 @@ body {
   padding: 1rem;
 }
 
+#form-inicio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+}
+
+.campo {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #333;
+}
+
+.mensaje-error {
+  color: #c00;
+}
+
 #controles {
   display: flex;
   gap: 1rem;
@@ -40,8 +57,10 @@ body {
   inset: 0;
   background: rgba(0,0,0,0.6);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
 
 #modal-victoria p {
