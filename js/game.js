@@ -33,6 +33,7 @@ var Juego = (function () {
   // variables de puntajes
   var puntaje = 0;
   var dificultadActual = 'facil';
+  var nombreJugador = '';
   var segundosTranscurridos = 0;
   var intervaloTiempo = null;
   var temporizadorActivo = false;
@@ -202,12 +203,18 @@ var Juego = (function () {
     restarSegundosTranscurridos();
 
     var mensaje = document.getElementById('mensaje-victoria');
-    mensaje.textContent = 'Ganaste! puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's'; // armamos mensaje ejemplo Ganaste! puntos: 50 - Tiempo: 30s
+    // ahora el mensaje incluye jugador y nivel, antes solo mostraba puntos y tiempo
+    mensaje.textContent = nombreJugador + ' ganó jugando en nivel ' + dificultadActual +
+      '! Puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's';
     document.getElementById('modal-victoria').classList.remove('oculto');
   }
 
-  function iniciarJuego() {
+  function iniciarJuego(nombre) {
     var dificultad = document.getElementById('dificultad').value; // obtener el valor del select de dificultad
+
+    if (nombre) {
+      nombreJugador = nombre; // solo lo pisamos si vino un nombre nuevo (al reiniciar se mantiene el mismo)
+    }
 
     dificultadActual = dificultad;
     totalPares = Niveles[dificultadActual] || Niveles.facil;
@@ -233,12 +240,6 @@ var Juego = (function () {
     var mazo = obtenerMazo(dificultad);
     mostrarTablero(mazo);
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    // espera que el HTML esté completamente cargado antes de tocar el DOM
-    document.getElementById('btn-reiniciar').addEventListener('click', iniciarJuego);
-    iniciarJuego();
-  });
 
   return {
     iniciarJuego: iniciarJuego
