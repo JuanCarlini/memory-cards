@@ -5,7 +5,20 @@ body {
   padding: 1rem;
 }
 
+nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 #form-inicio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+}
+
+#form-contacto {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
