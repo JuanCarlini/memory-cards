@@ -16,10 +16,23 @@ var Juego = (function () {
     dificil: 18
   };
 
-  // variables de estado 
+  // variables de estado
   var primeraCarta = null;
   var segundaCarta = null;
   var bloqueado = false;
+
+  // variables de puntajes
+  var puntaje = 0;
+  var dificultadActual = 'facil';
+  var segundosTranscurridos = 0;
+  var intervaloTiempo = null;
+  var temporizadorActivo = false;
+
+  var PUNTOS_POR_ACIERTO = { facil: 10, medio: 15, dificil: 20 };
+  var PENALIZACION_ERROR = 2;
+
+  var paresEncontrados = 0;
+  var totalPares = 0;
 
   // Función para mezclar las cartas
   function mezclarCartas(mazo) {
@@ -53,62 +66,114 @@ var Juego = (function () {
       });
       contenedor.appendChild(carta); // insertar div dentro del tablero
     }
+  }
 
-    function manejarClickCarta(carta) {
-        if (bloqueado || carta === primeraCarta || carta.className.indexOf('mostrada') !== -1) // se chekea si la carta es la primera, si l acarta ya esta mostrada o si el tablero esta bloqueado, si es asi, ignora el click
-            { return; }                                                 // idenxOf, chekea si la palabra mostrada esta dentro del className de la carta, si es asi, significa que la carta ya fue mostrada y no se puede hacer click sobre ella
-        
-        revelarCarta(carta);
+  // funciones de temporizador
+  function iniciarTemporizador() {
+    if (temporizadorActivo) { return; } // ya está corriendo, no lo reiniciamos con cada clic
+    temporizadorActivo = true;
+    intervaloTiempo = setInterval(function () {
+      segundosTranscurridos++;
+      mostrarTiempo();
+    }, 1000);
+  }
+  function detenerTemporizador() {
+    clearInterval(intervaloTiempo);
+    temporizadorActivo = false;
+  }
 
-        if (!primeraCarta){
-            primeraCarta = carta;
-            return;
-        } 
+  function mostrarTiempo() {
+    document.getElementById('tiempo').textContent = 'Tiempo: ' + segundosTranscurridos;
+  }
 
-        segundaCarta = carta;
-        bloqueado = true;
+  // funciones de puntaje
 
-        if (primeraCarta.getAttribute('data-valor') === segundaCarta.getAttribute('data-valor')) {
-            marcarEncontrada();
-        } else {
-            setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
-        }
-            
+  function sumarEncontradas() {
+    var puntos = PUNTOS_POR_ACIERTO[dificultadActual] || PUNTOS_POR_ACIERTO.facil;
+    puntaje += puntos;
+    mostrarPuntaje();
+  }
 
+  function restarError() {
+    puntaje -= PENALIZACION_ERROR;
+    if (puntaje < 0) { puntaje = 0; } // no puede haber puntaje menor a 0
+    mostrarPuntaje();
+  }
+
+  function mostrarPuntaje() {
+    document.getElementById('puntaje').textContent = 'Puntaje: ' + puntaje;
+  }
+
+  // funciones de manejo de cartas
+
+  function manejarClickCarta(carta) {
+    if (bloqueado || carta === primeraCarta || carta.className.indexOf('mostrada') !== -1) // se chekea si la carta es la primera, si l acarta ya esta mostrada o si el tablero esta bloqueado, si es asi, ignora el click
+      { return; }                                                 // idenxOf, chekea si la palabra mostrada esta dentro del className de la carta, si es asi, significa que la carta ya fue mostrada y no se puede hacer click sobre ella
+
+    iniciarTemporizador(); // inicia el temporizador si no estaba activo
+
+    revelarCarta(carta);
+
+    if (!primeraCarta) {
+      primeraCarta = carta;
+      return;
     }
 
-    function revelarCarta(carta) {
-        carta.textContent = carta.getAttribute('data-valor');
-        carta.className = 'carta mostrada';
-    } 
+    segundaCarta = carta;
+    bloqueado = true;
 
-    function marcarEncontrada() {
-        primeraCarta.className = 'carta mostrada';
-        segundaCarta.className = 'carta mostrada';
-        resetearCartas();
+    if (primeraCarta.getAttribute('data-valor') === segundaCarta.getAttribute('data-valor')) {
+      sumarEncontradas();
+      marcarEncontrada();
+    } else {
+      restarError();
+      setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
     }
+  }
 
-    function ocultarCartas() {
-        primeraCarta.textContent = '';
-        segundaCarta.textContent = '';
-        primeraCarta.className = 'carta';
-        segundaCarta.className = 'carta';
-        resetearCartas();
-    }
+  function revelarCarta(carta) {
+    carta.textContent = carta.getAttribute('data-valor');
+    carta.className = 'carta mostrada';
+  }
 
-    function resetearCartas() {
-        primeraCarta = null;
-        segundaCarta = null;
-        bloqueado = false;
-    }
+  function marcarEncontrada() {
+    primeraCarta.className = 'carta mostrada';
+    segundaCarta.className = 'carta mostrada';
+    resetearCartas();
+  }
+
+  function ocultarCartas() {
+    primeraCarta.textContent = '';
+    segundaCarta.textContent = '';
+    primeraCarta.className = 'carta';
+    segundaCarta.className = 'carta';
+    resetearCartas();
+  }
+
+  function resetearCartas() {
+    primeraCarta = null;
+    segundaCarta = null;
+    bloqueado = false;
   }
 
   function iniciarJuego() {
     var dificultad = document.getElementById('dificultad').value; // obtener el valor del select de dificultad
 
+    dificultadActual = dificultad;
+    totalPares = Niveles[dificultadActual] || Niveles.facil;
+    paresEncontrados = 0;
+
     primeraCarta = null;
     segundaCarta = null;
     bloqueado = false;
+
+    puntaje = 0;
+    segundosTranscurridos = 0;
+
+    document.getElementById('modal-victoria').classList.add('oculto');
+    detenerTemporizador();
+    mostrarPuntaje();
+    mostrarTiempo();
 
     var mazo = obtenerMazo(dificultad);
     mostrarTablero(mazo);
@@ -122,6 +187,6 @@ var Juego = (function () {
 
   return {
     iniciarJuego: iniciarJuego
-  }; // expone iniciarJuego 
+  }; // expone iniciarJuego
 
 })();
