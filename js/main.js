@@ -49,10 +49,17 @@ document.addEventListener('DOMContentLoaded', function () {
     Juego.iniciarJuego(nombre);
   });
 
+  // ojo: no podemos enganchar Juego.iniciarJuego directo en el addEventListener, porque el
+  // click le pasaria el evento como si fuera el nombre del jugador y lo pisaria mal
+  // (esto nos paso probando: el nombre quedaba como "[object PointerEvent]")
+  function reiniciarPartida() {
+    Juego.iniciarJuego();
+  }
+
   // el boton de reiniciar y el de "jugar de nuevo" del modal hacen exactamente lo mismo:
   // vuelven a armar el tablero sin pedir el nombre otra vez
-  btnReiniciar.addEventListener('click', Juego.iniciarJuego);
-  btnJugarDeNuevo.addEventListener('click', Juego.iniciarJuego);
+  btnReiniciar.addEventListener('click', reiniciarPartida);
+  btnJugarDeNuevo.addEventListener('click', reiniciarPartida);
 
   // prende/apaga los sonidos y actualiza el texto del boton para que se vea el estado actual
   btnSonido.addEventListener('click', function () {
