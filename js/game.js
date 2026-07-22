@@ -191,12 +191,6 @@ var Juego = (function () {
     mostrarTablero(mazo);
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    // espera que el HTML esté completamente cargado antes de tocar el DOM
-    document.getElementById('btn-reiniciar').addEventListener('click', iniciarJuego);
-    iniciarJuego();
-  });
-
   return {
     iniciarJuego: iniciarJuego
   }; // expone iniciarJuego

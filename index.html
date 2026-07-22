@@ -19,7 +19,7 @@
       <select id="dificultad">
         <option value="facil">Fácil (16 cartas)</option>
         <option value="medio">Medio (20 cartas)</option>
-        <option value="dificil">Difícil (36 cartas)</option>
+        <option value="dificil">Difícil (18 cartas)</option>
       </select>
 
       <span id="puntaje">Puntaje: 0</span>
@@ -29,11 +29,12 @@
     </section>
 
     <section id="tablero">
-      <!-- Las cartas se generan acá desde game.js -->
+      <!-- Las cartas se generan desde game.js -->
     </section>
 
     <div id="modal-victoria" class="oculto">
       <p id="mensaje-victoria"></p>
+      <button type="button" onclick="Juego.iniciarJuego()">Jugar de nuevo</button>
     </div>
   </main>
 
