@@ -139,6 +139,11 @@ var Juego = (function () {
   function marcarEncontrada() {
     primeraCarta.className = 'carta mostrada';
     segundaCarta.className = 'carta mostrada';
+    
+    paresEncontrados++;
+    if (paresEncontrados === totalPares) {
+      finalizarJuego();
+    }
     resetearCartas();
   }
 
@@ -154,6 +159,13 @@ var Juego = (function () {
     primeraCarta = null;
     segundaCarta = null;
     bloqueado = false;
+  }
+
+  function finalizarJuego() {
+    detenerTemporizador();
+    var mensaje = document.getElementById('mensaje-victoria');
+    mensaje.textContent = 'Ganaste! puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's'; // armamos mensaje ejemplo Ganaste! puntos: 50 - Tiempo: 30s
+    document.getElementById('modal-victoria').classList.remove('oculto');
   }
 
   function iniciarJuego() {
