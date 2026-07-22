@@ -37,6 +37,7 @@ var Juego = (function () {
   // variables de puntajes
   var puntaje = 0;
   var dificultadActual = 'facil';
+  var nombreJugador = '';
   var segundosTranscurridos = 0;
   var intervaloTiempo = null;
   var temporizadorActivo = false;
@@ -238,8 +239,12 @@ var Juego = (function () {
     document.getElementById('modal-victoria').classList.remove('oculto');
   }
 
-  function iniciarJuego() {
+  function iniciarJuego(nombre) {
     var dificultad = document.getElementById('dificultad').value; // obtener el valor del select de dificultad
+
+    if (nombre) {
+      nombreJugador = nombre; // solo lo pisamos si vino un nombre nuevo (al reiniciar se mantiene el mismo)
+    }
 
     dificultadActual = dificultad;
     totalPares = Niveles[dificultadActual] || Niveles.facil;
@@ -268,12 +273,6 @@ var Juego = (function () {
     var mazo = obtenerMazo(dificultad);
     mostrarTablero(mazo);
   }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    // espera que el HTML esté completamente cargado antes de tocar el DOM
-    document.getElementById('btn-reiniciar').addEventListener('click', iniciarJuego);
-    iniciarJuego();
-  });
 
   return {
     iniciarJuego: iniciarJuego

@@ -1,3 +1,104 @@
+body {
+  --color-fondo: #fff;
+  --color-texto: #222;
+  --color-carta: #ccc;
+  --color-borde: #333;
+  font-family: sans-serif;
+  padding: 1rem;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+body.tema-oscuro {
+  --color-fondo: #1e1e1e;
+  --color-texto: #eee;
+  --color-carta: #444;
+  --color-borde: #888;
+}
+
 .oculto {
-  display: none;
+  display: none !important;
+}
+
+.campo {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-borde);
+}
+
+.mensaje-error {
+  color: #c00;
+}
+
+.carta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--color-borde);
+  background: var(--color-carta);
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.carta.mostrada {
+  background: #fff;
+}
+
+#form-inicio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+}
+
+#controles {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+#tablero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#modal-victoria {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#modal-victoria p {
+  background: #fff;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .carta {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  #tablero {
+    gap: 4px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .carta {
+    width: 65px;
+    height: 65px;
+  }
 }

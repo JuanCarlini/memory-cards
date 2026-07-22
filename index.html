@@ -11,29 +11,49 @@
 
   <header>
     <h1>Memotest Mundial 2026</h1>
+    <nav>
+      <a href="pages/contact.html">Contacto</a>
+      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
+    </nav>
+    <button type="button" id="btn-tema">Modo oscuro</button>
   </header>
 
   <main>
-    <section id="controles">
-      <label for="dificultad">Dificultad:</label>
-      <select id="dificultad">
-        <option value="facil">Fácil (16 cartas)</option>
-        <option value="medio">Medio (20 cartas)</option>
-        <option value="dificil">Difícil (36 cartas)</option>
-      </select>
+    <section id="pantalla-inicio">
+      <form id="form-inicio" novalidate>
+        <label for="nombre-jugador">Nombre del jugador:</label>
+        <input type="text" id="nombre-jugador" class="campo">
 
-      <span id="puntaje">Puntaje: 0</span>
-      <span id="tiempo">Tiempo: 0</span>
+        <label for="dificultad">Dificultad:</label>
+        <select id="dificultad" class="campo">
+          <option value="facil">Fácil (16 cartas)</option>
+          <option value="medio">Medio (20 cartas)</option>
+          <option value="dificil">Difícil (18 cartas)</option>
+        </select>
 
-      <button id="btn-reiniciar" type="button">Reiniciar</button>
+        <p id="error-inicio" class="mensaje-error oculto" role="alert"></p>
+
+        <button type="submit" id="btn-jugar">Jugar</button>
+      </form>
     </section>
 
-    <section id="tablero">
-      <!-- Las cartas se generan acá desde game.js -->
+    <section id="pantalla-juego" class="oculto">
+      <section id="controles">
+        <span id="puntaje">Puntaje: 0</span>
+        <span id="tiempo">Tiempo: 0</span>
+        <span id="intentos">Intentos: 0</span>
+        <span id="errores">Errores: 0</span>
+        <button id="btn-reiniciar" type="button">Reiniciar</button>
+      </section>
+
+      <section id="tablero">
+        <!-- Las cartas se generan desde game.js -->
+      </section>
     </section>
 
     <div id="modal-victoria" class="oculto">
       <p id="mensaje-victoria"></p>
+      <button type="button" id="btn-jugar-de-nuevo">Jugar de nuevo</button>
     </div>
   </main>
 
@@ -45,5 +65,6 @@
   <script src="js/validations.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/tema.js"></script>
 </body>
 </html>
