@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memotest - Mundial 2026</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Memotest Mundial 2026</h1>
+  </header>
+
+  <main>
+    <section id="controles">
+      <label for="dificultad">Dificultad:</label>
+      <select id="dificultad">
+        <option value="facil">Fácil (16 cartas)</option>
+        <option value="medio">Medio (20 cartas)</option>
+        <option value="dificil">Difícil (36 cartas)</option>
+      </select>
+
+      <span id="puntaje">Puntaje: 0</span>
+      <span id="tiempo">Tiempo: 0</span>
+
+      <button id="btn-reiniciar" type="button">Reiniciar</button>
+    </section>
+
+    <section id="tablero">
+      <!-- Las cartas se generan acá desde game.js -->
+    </section>
+
+    <div id="modal-victoria" class="oculto">
+      <p id="mensaje-victoria"></p>
+    </div>
+  </main>
+
+  <footer>
+    <p>Trabajo Práctico - Memotest</p>
+  </footer>
+
+  <script src="js/game.js"></script>
+  <script src="js/validations.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
