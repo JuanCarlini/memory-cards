@@ -10,13 +10,12 @@
 <body>
 
   <header>
-    <h1>Memotest Mundial 2026</h1>
+    <h1>Contacto</h1>
     <nav>
-      <a href="../index.html">Inicio</a>
-      <a href="contact.html">Contacto</a>
-      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://juancarlini.github.io/memory-cards/" target="_blank" rel="noopener">Jugar online</a>
+      <a href="../index.html">Volver al juego</a>
+      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
     </nav>
+    <button type="button" id="btn-tema">Modo oscuro</button>
   </header>
 
   <main>
@@ -24,16 +23,17 @@
       <form id="form-contacto" novalidate>
         <label for="nombre-contacto">Nombre:</label>
         <input type="text" id="nombre-contacto" class="campo">
+        <p id="error-nombre-contacto" class="mensaje-error oculto" role="alert"></p>
 
         <label for="mail-contacto">Mail:</label>
         <input type="text" id="mail-contacto" class="campo">
+        <p id="error-mail-contacto" class="mensaje-error oculto" role="alert"></p>
 
         <label for="mensaje-contacto">Mensaje:</label>
         <textarea id="mensaje-contacto" class="campo"></textarea>
+        <p id="error-mensaje-contacto" class="mensaje-error oculto" role="alert"></p>
 
-        <p id="error-contacto" class="mensaje-error oculto" role="alert"></p>
-
-        <button type="submit" id="btn-enviar">Enviar</button>
+        <button type="submit" id="btn-enviar-contacto">Enviar</button>
       </form>
     </section>
   </main>
@@ -44,5 +44,6 @@
 
   <script src="../js/validations.js"></script>
   <script src="../js/contact.js"></script>
+  <script src="../js/tema.js"></script>
 </body>
 </html>

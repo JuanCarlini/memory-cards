@@ -1,55 +1,64 @@
 'use strict';
 
-// inicializa la pagina de contacto: valida el formulario y arma el mailto para mandarlo
 document.addEventListener('DOMContentLoaded', function () {
-  var MAIL_DESTINO = 'ramagohlke@gmail.com'; // TODO: cambiar por el mail que quiera usar el grupo
   var formContacto = document.getElementById('form-contacto');
-  var errorContacto = document.getElementById('error-contacto');
+  var campoNombre = document.getElementById('nombre-contacto');
+  var campoMail = document.getElementById('mail-contacto');
+  var campoMensaje = document.getElementById('mensaje-contacto');
+  var errorNombre = document.getElementById('error-nombre-contacto');
+  var errorMail = document.getElementById('error-mail-contacto');
+  var errorMensaje = document.getElementById('error-mensaje-contacto');
+  var MAIL_DESTINO = 'juanandrescarlini@gmail.com';
 
-  // muestra el error del formulario de contacto (sin alert)
-  function mostrarError(mensaje) {
-    errorContacto.textContent = mensaje;
-    errorContacto.classList.remove('oculto');
+  function mostrarError(elementoError, mensaje) {
+    elementoError.textContent = mensaje;
+    elementoError.classList.remove('oculto');
   }
 
-  // corre las 3 validaciones en orden y corta en la primera que falle, mostrando su error
-  function validarFormulario(nombre, mail, mensaje) {
-    if (!Validaciones.validarNombreContacto(nombre)) {
-      mostrarError('El nombre debe ser alfanumérico.');
-      return false;
-    }
-    if (!Validaciones.validarMail(mail)) {
-      mostrarError('Ingresá un mail válido.');
-      return false;
-    }
-    if (!Validaciones.validarMensaje(mensaje)) {
-      mostrarError('El mensaje debe tener más de 5 caracteres.');
-      return false;
-    }
-    errorContacto.classList.add('oculto');
-    return true;
+  function ocultarError(elementoError) {
+    elementoError.classList.add('oculto');
   }
 
-  // arma el link mailto: con asunto y cuerpo ya armados, y hace que el navegador lo abra
-  // (eso dispara el cliente de mail que tenga configurado el sistema operativo)
-  function enviarMail(nombre, mail, mensaje) {
-    var asunto = 'Contacto desde Memotest Mundial 2026 - ' + nombre;
-    var cuerpo = 'Nombre: ' + nombre + '\nMail: ' + mail + '\nMensaje: ' + mensaje;
-    window.location.href = 'mailto:' + MAIL_DESTINO + '?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
+  function validarFormulario() {
+    var esValido = true;
+
+    if (Validaciones.validarNombreContacto(campoNombre.value.trim())) {
+      ocultarError(errorNombre);
+    } else {
+      mostrarError(errorNombre, 'El nombre debe ser alfanumérico y tener al menos 3 caracteres.');
+      esValido = false;
+    }
+
+    if (Validaciones.validarMail(campoMail.value.trim())) {
+      ocultarError(errorMail);
+    } else {
+      mostrarError(errorMail, 'Ingresá un mail válido.');
+      esValido = false;
+    }
+
+    if (Validaciones.validarMensaje(campoMensaje.value.trim())) {
+      ocultarError(errorMensaje);
+    } else {
+      mostrarError(errorMensaje, 'El mensaje debe tener más de 5 caracteres.');
+      esValido = false;
+    }
+
+    return esValido;
   }
 
-  // cuando mandan el formulario: si pasa las validaciones, dispara el mailto
-  formContacto.addEventListener('submit', function (evento) {
-    var nombre = document.getElementById('nombre-contacto').value.trim();
-    var mail = document.getElementById('mail-contacto').value.trim();
-    var mensaje = document.getElementById('mensaje-contacto').value.trim();
-
+  function enviarContacto(evento) {
+    var asunto, cuerpo;
     evento.preventDefault();
+    if (!validarFormulario()) { return; }
 
-    if (!validarFormulario(nombre, mail, mensaje)) {
-      return;
-    }
+    asunto = 'Contacto desde Memotest Mundial 2026';
+    cuerpo = 'Nombre: ' + campoNombre.value.trim() +
+      '\nMail: ' + campoMail.value.trim() +
+      '\n\n' + campoMensaje.value.trim();
+    window.location.href = 'mailto:' + MAIL_DESTINO +
+      '?subject=' + encodeURIComponent(asunto) +
+      '&body=' + encodeURIComponent(cuerpo);
+  }
 
-    enviarMail(nombre, mail, mensaje);
-  });
+  formContacto.addEventListener('submit', enviarContacto);
 });

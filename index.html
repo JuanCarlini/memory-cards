@@ -12,13 +12,12 @@
   <header>
     <h1>Memotest Mundial 2026</h1>
     <nav>
-      <a href="index.html">Inicio</a>
       <a href="pages/contact.html">Contacto</a>
-      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://juancarlini.github.io/memory-cards/" target="_blank" rel="noopener">Jugar online</a>
+      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
     </nav>
-    <button id="btn-sonido" type="button">🔊 Sonido activado</button>
-    <button id="btn-ranking" type="button">🏆 Ranking</button>
+    <button type="button" id="btn-tema">Modo oscuro</button>
+    <button type="button" id="btn-sonido">🔊 Sonido activado</button>
+    <button type="button" id="btn-ranking">🏆 Ranking</button>
   </header>
 
   <main>
@@ -54,16 +53,14 @@
       </section>
     </section>
 
-    <div id="modal-victoria" class="modal oculto">
-      <div class="contenido-modal">
-        <p id="mensaje-victoria"></p>
-        <button type="button" id="btn-jugar-de-nuevo">Jugar de nuevo</button>
-        <button type="button" id="btn-ver-ranking-victoria">Ver ranking</button>
-      </div>
+    <div id="modal-victoria" class="oculto">
+      <p id="mensaje-victoria"></p>
+      <button type="button" id="btn-jugar-de-nuevo">Jugar de nuevo</button>
+      <button type="button" id="btn-ver-ranking-victoria">Ver ranking</button>
     </div>
 
-    <div id="modal-ranking" class="modal oculto">
-      <div class="contenido-modal">
+    <div id="modal-ranking" class="oculto">
+      <div>
         <h2>Ranking de partidas</h2>
 
         <label for="orden-ranking">Ordenar por:</label>
@@ -96,8 +93,8 @@
       </div>
     </div>
 
-    <div id="modal-confirmar-borrado" class="modal oculto">
-      <div class="contenido-modal">
+    <div id="modal-confirmar-borrado" class="oculto">
+      <div>
         <p>¿Seguro que querés borrar todo el historial del ranking? Esto no se puede deshacer.</p>
         <button type="button" id="btn-confirmar-borrado">Sí, borrar</button>
         <button type="button" id="btn-cancelar-borrado">Cancelar</button>
@@ -110,10 +107,11 @@
   </footer>
 
   <script src="js/sounds.js"></script>
-  <script src="js/storage.js"></script>
   <script src="js/game.js"></script>
   <script src="js/validations.js"></script>
+  <script src="js/storage.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/tema.js"></script>
   <script src="js/ranking.js"></script>
 </body>
 </html>

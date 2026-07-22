@@ -1,14 +1,50 @@
-.oculto { display: none !important; }
-
 body {
+  --color-fondo: #fff;
+  --color-texto: #222;
+  --color-carta: #ccc;
+  --color-borde: #333;
   font-family: sans-serif;
   padding: 1rem;
+  background: var(--color-fondo);
+  color: var(--color-texto);
 }
 
-nav {
+body.tema-oscuro {
+  --color-fondo: #1e1e1e;
+  --color-texto: #eee;
+  --color-carta: #444;
+  --color-borde: #888;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.campo {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-borde);
+}
+
+.mensaje-error {
+  color: #c00;
+}
+
+.carta {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--color-borde);
+  background: var(--color-carta);
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.carta.mostrada {
+  background: #fff;
 }
 
 #form-inicio {
@@ -18,27 +54,10 @@ nav {
   max-width: 320px;
 }
 
-#form-contacto {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: 320px;
-}
-
-.campo {
-  padding: 0.4rem;
-  font-size: 1rem;
-  border: 1px solid #333;
-}
-
-.mensaje-error {
-  color: #c00;
-}
-
 #controles {
   display: flex;
-  gap: 1rem;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -48,41 +67,43 @@ nav {
   gap: 8px;
 }
 
-.carta {
-  width: 80px;
-  height: 80px;
-  border: 2px solid #333;
-  cursor: pointer;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ccc;
-  user-select: none;
-}
-
-.carta.mostrada {
-  background: #fff;
-}
-
-.modal {
+#modal-victoria {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  background: rgba(0, 0, 0, 0.6);
 }
 
-.contenido-modal {
+#modal-victoria p {
   background: #fff;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+#modal-ranking,
+#modal-confirmar-borrado {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#modal-ranking > div,
+#modal-confirmar-borrado > div {
+  background: var(--color-fondo);
+  color: var(--color-texto);
   padding: 1.5rem;
   max-width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  font-size: 1.2rem;
 }
 
 #tabla-ranking {
@@ -93,5 +114,24 @@ nav {
 #tabla-ranking th,
 #tabla-ranking td {
   padding: 0.4rem;
-  border: 1px solid #333;
+  border: 1px solid var(--color-borde);
+}
+
+@media (max-width: 600px) {
+  .carta {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  #tablero {
+    gap: 4px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .carta {
+    width: 65px;
+    height: 65px;
+  }
 }
