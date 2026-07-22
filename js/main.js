@@ -32,7 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
     Juego.iniciarJuego(nombre);
   });
 
-  btnReiniciar.addEventListener('click', Juego.iniciarJuego);
+  function manejarReinicio() {
+    Juego.iniciarJuego();
+  }
 
-  btnJugarDeNuevo.addEventListener('click', Juego.iniciarJuego);
+  btnReiniciar.addEventListener('click', manejarReinicio);
+
+  btnJugarDeNuevo.addEventListener('click', manejarReinicio);
 });

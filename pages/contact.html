@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Memotest Mundial 2026</title>
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Contacto</h1>
+    <nav>
+      <a href="../index.html">Volver al juego</a>
+      <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
+    </nav>
+    <button type="button" id="btn-tema">Modo oscuro</button>
+  </header>
+
+  <main>
+    <section id="pantalla-contacto">
+      <form id="form-contacto" novalidate>
+        <label for="nombre-contacto">Nombre:</label>
+        <input type="text" id="nombre-contacto" class="campo">
+        <p id="error-nombre-contacto" class="mensaje-error oculto" role="alert"></p>
+
+        <label for="mail-contacto">Mail:</label>
+        <input type="text" id="mail-contacto" class="campo">
+        <p id="error-mail-contacto" class="mensaje-error oculto" role="alert"></p>
+
+        <label for="mensaje-contacto">Mensaje:</label>
+        <textarea id="mensaje-contacto" class="campo"></textarea>
+        <p id="error-mensaje-contacto" class="mensaje-error oculto" role="alert"></p>
+
+        <button type="submit" id="btn-enviar-contacto">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Trabajo Práctico - Memotest</p>
+  </footer>
+
+  <script src="../js/validations.js"></script>
+</body>
+</html>
