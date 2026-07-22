@@ -16,9 +16,18 @@ var Juego = (function () {
     dificil: 18
   };
 
+  var Racha = {
+    consecutivoDosSeguidas: 2,
+    consecutivoMaximasSeguidas: 3,
+  }
+
   // variables de estado
   var primeraCarta = null;
   var segundaCarta = null;
+
+  var consecutivasEncontradas = 0;
+  var consecutivasErradas = 0;
+
   var bloqueado = false;
 
   // variables de puntajes
@@ -28,8 +37,9 @@ var Juego = (function () {
   var intervaloTiempo = null;
   var temporizadorActivo = false;
 
-  var PUNTOS_POR_ACIERTO = { facil: 10, medio: 15, dificil: 20 };
-  var PENALIZACION_ERROR = 2;
+  var PUNTOS_POR_ACIERTO = 100;
+  var BONO_VICTORIA = 300;
+  var PENALIZACION_ERROR = { facil: 10, medio: 20, dificil: 30 };
 
   var paresEncontrados = 0;
   var totalPares = 0;
@@ -88,16 +98,40 @@ var Juego = (function () {
 
   // funciones de puntaje
 
+  function obtenerMultiplicadorRacha(consecutivas) {
+    if (consecutivas >= Racha.consecutivoMaximasSeguidas) { return Racha.consecutivoMaximasSeguidas; }
+    if (consecutivas >= Racha.consecutivoDosSeguidas) { return Racha.consecutivoDosSeguidas; }
+    return 1;
+  }
+
   function sumarEncontradas() {
-    var puntos = PUNTOS_POR_ACIERTO[dificultadActual] || PUNTOS_POR_ACIERTO.facil;
-    puntaje += puntos;
+    consecutivasEncontradas++;
+    consecutivasErradas = 0; // un acierto corta cualquier racha de errores
+
+    var multiplicador = obtenerMultiplicadorRacha(consecutivasEncontradas);
+    puntaje += PUNTOS_POR_ACIERTO * multiplicador;
     mostrarPuntaje();
   }
 
   function restarError() {
-    puntaje -= PENALIZACION_ERROR;
+    consecutivasErradas++;
+    consecutivasEncontradas = 0; // un error corta cualquier racha de aciertos
+
+    var multiplicador = obtenerMultiplicadorRacha(consecutivasErradas);
+    var penalizacionBase = PENALIZACION_ERROR[dificultadActual] || PENALIZACION_ERROR.facil;
+    puntaje -= penalizacionBase * multiplicador;
     if (puntaje < 0) { puntaje = 0; } // no puede haber puntaje menor a 0
     mostrarPuntaje();
+  }
+
+  function sumarBonoVictoria() {
+    puntaje += BONO_VICTORIA;
+    mostrarPuntaje();
+  }
+
+  function restarSegundosTranscurridos() {
+    puntaje -= segundosTranscurridos; //restamos los segundos transcurridos, pero validamos que no sea menor a 0
+    if (puntaje < 0) { puntaje = 0; }
   }
 
   function mostrarPuntaje() {
@@ -109,7 +143,7 @@ var Juego = (function () {
   function manejarClickCarta(carta) {
     if (bloqueado || carta === primeraCarta || carta.className.indexOf('mostrada') !== -1) // se chekea si la carta es la primera, si l acarta ya esta mostrada o si el tablero esta bloqueado, si es asi, ignora el click
       { return; }                                                 // idenxOf, chekea si la palabra mostrada esta dentro del className de la carta, si es asi, significa que la carta ya fue mostrada y no se puede hacer click sobre ella
-
+ 
     iniciarTemporizador(); // inicia el temporizador si no estaba activo
 
     revelarCarta(carta);
@@ -139,11 +173,12 @@ var Juego = (function () {
   function marcarEncontrada() {
     primeraCarta.className = 'carta mostrada';
     segundaCarta.className = 'carta mostrada';
-    
+
     paresEncontrados++;
     if (paresEncontrados === totalPares) {
       finalizarJuego();
     }
+
     resetearCartas();
   }
 
@@ -163,6 +198,9 @@ var Juego = (function () {
 
   function finalizarJuego() {
     detenerTemporizador();
+    sumarBonoVictoria();
+    restarSegundosTranscurridos();
+
     var mensaje = document.getElementById('mensaje-victoria');
     mensaje.textContent = 'Ganaste! puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's'; // armamos mensaje ejemplo Ganaste! puntos: 50 - Tiempo: 30s
     document.getElementById('modal-victoria').classList.remove('oculto');
@@ -177,9 +215,14 @@ var Juego = (function () {
 
     primeraCarta = null;
     segundaCarta = null;
+
+    consecutivasEncontradas = 0;
+    consecutivasErradas = 0;
+
     bloqueado = false;
 
     puntaje = 0;
+    
     segundosTranscurridos = 0;
 
     document.getElementById('modal-victoria').classList.add('oculto');
