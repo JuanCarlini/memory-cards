@@ -34,6 +34,8 @@ var Juego = (function () {
 
   var paresEncontrados = 0;
   var totalPares = 0;
+  var intentos = 0;
+  var errores = 0;
 
   var temporizadorOcultar = null; // guarda el id del setTimeout que tapa las cartas, para poder cancelarlo si reinician a mitad de camino
 
@@ -136,6 +138,16 @@ var Juego = (function () {
     document.getElementById('puntaje').textContent = 'Puntaje: ' + puntaje;
   }
 
+  // pinta la cantidad de intentos en pantalla
+  function mostrarIntentos() {
+    document.getElementById('intentos').textContent = 'Intentos: ' + intentos;
+  }
+
+  // pinta la cantidad de errores en pantalla
+  function mostrarErrores() {
+    document.getElementById('errores').textContent = 'Errores: ' + errores;
+  }
+
   // funciones de manejo de cartas
 
   // se dispara con cada click en una carta. corta rapido si no corresponde jugarla, sino
@@ -156,10 +168,15 @@ var Juego = (function () {
     segundaCarta = carta;
     bloqueado = true;
 
+    intentos++; // cada vez que se comparan dos cartas cuenta como un intento, acierte o no
+    mostrarIntentos();
+
     if (primeraCarta.getAttribute('data-valor') === segundaCarta.getAttribute('data-valor')) {
       sumarEncontradas();
       marcarEncontrada();
     } else {
+      errores++;
+      mostrarErrores();
       restarError();
       temporizadorOcultar = setTimeout(ocultarCartas, 800); //esperamos un rato antes de ocultar las cartas de nuevo
     }
@@ -203,15 +220,27 @@ var Juego = (function () {
   }
 
   // se llama cuando ya se encontraron todos los pares: para el reloj, arma el mensaje
-  // final con los datos de la partida y muestra el modal de victoria
+  // final con los datos de la partida, la guarda en el ranking y muestra el modal de victoria
   function finalizarJuego() {
     detenerTemporizador();
+
     var mensaje = document.getElementById('mensaje-victoria');
-    // ahora el mensaje incluye jugador y nivel, antes solo mostraba puntos y tiempo
     mensaje.textContent = nombreJugador + ' ganó jugando en nivel ' + dificultadActual +
-      '! Puntos: ' + puntaje + ' - Tiempo: ' + segundosTranscurridos + 's';
+      '! Puntos: ' + puntaje + ' - Intentos: ' + intentos + ' - Errores: ' + errores +
+      ' - Tiempo: ' + segundosTranscurridos + 's';
     document.getElementById('modal-victoria').classList.remove('oculto');
     Sonidos.sonarVictoria();
+
+    // guardamos esta partida en el historial del ranking (localStorage)
+    Storage.guardarResultado({
+      nombre: nombreJugador,
+      puntaje: puntaje,
+      nivel: dificultadActual,
+      intentos: intentos,
+      errores: errores,
+      duracionSegundos: segundosTranscurridos,
+      fecha: new Date().toISOString()
+    });
   }
 
   // arranca (o reinicia) una partida: deja todo en cero y arma un tablero nuevo para la
@@ -241,11 +270,15 @@ var Juego = (function () {
 
     puntaje = 0;
     segundosTranscurridos = 0;
+    intentos = 0;
+    errores = 0;
 
     document.getElementById('modal-victoria').classList.add('oculto');
     detenerTemporizador();
     mostrarPuntaje();
     mostrarTiempo();
+    mostrarIntentos();
+    mostrarErrores();
 
     var mazo = obtenerMazo(dificultad);
     mostrarTablero(mazo);
