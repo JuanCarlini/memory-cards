@@ -1,6 +1,19 @@
 body {
+  --color-fondo: #fff;
+  --color-texto: #222;
+  --color-carta: #ccc;
+  --color-borde: #333;
   font-family: sans-serif;
   padding: 1rem;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+body.tema-oscuro {
+  --color-fondo: #1e1e1e;
+  --color-texto: #eee;
+  --color-carta: #444;
+  --color-borde: #888;
 }
 
 .oculto {
@@ -10,7 +23,7 @@ body {
 .campo {
   padding: 0.4rem;
   font-size: 1rem;
-  border: 1px solid #333;
+  border: 1px solid var(--color-borde);
 }
 
 .mensaje-error {
@@ -23,8 +36,8 @@ body {
   justify-content: center;
   width: 80px;
   height: 80px;
-  border: 2px solid #333;
-  background: #ccc;
+  border: 2px solid var(--color-borde);
+  background: var(--color-carta);
   font-size: 2rem;
   cursor: pointer;
   user-select: none;
