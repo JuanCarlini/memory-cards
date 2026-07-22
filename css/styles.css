@@ -65,7 +65,7 @@ nav {
   background: #fff;
 }
 
-#modal-victoria {
+.modal {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
@@ -76,8 +76,22 @@ nav {
   gap: 1rem;
 }
 
-#modal-victoria p {
+.contenido-modal {
   background: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   font-size: 1.2rem;
+}
+
+#tabla-ranking {
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+#tabla-ranking th,
+#tabla-ranking td {
+  padding: 0.4rem;
+  border: 1px solid #333;
 }
