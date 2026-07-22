@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function iniciarPartida() {
-    // reemplazar chequeo inline por Validaciones.validarNombre cuando esté listo
     var nombre = document.getElementById('nombre-jugador').value.trim();
-    if (nombre.length < 3) {
+    if (!Validaciones.validarNombre(nombre)) {
       mostrarError('El nombre debe tener al menos 3 caracteres.');
       return false;
     }
@@ -25,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   formInicio.addEventListener('submit', function (evento) {
+    var nombre = document.getElementById('nombre-jugador').value.trim();
     evento.preventDefault();
     if (!iniciarPartida()) { return; }
     pantallainicio.classList.add('oculto');
     pantallaJuego.classList.remove('oculto');
-    // pasar nombre del jugador a Juego.iniciarJuego() cuando se le pueda pasar a la funcion
-    Juego.iniciarJuego();
+    Juego.iniciarJuego(nombre);
   });
 
   btnReiniciar.addEventListener('click', Juego.iniciarJuego);
