@@ -16,6 +16,8 @@
       <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
     </nav>
     <button type="button" id="btn-tema">Modo oscuro</button>
+    <button type="button" id="btn-sonido">🔊 Sonido activado</button>
+    <button type="button" id="btn-ranking">🏆 Ranking</button>
   </header>
 
   <main>
@@ -54,6 +56,49 @@
     <div id="modal-victoria" class="oculto">
       <p id="mensaje-victoria"></p>
       <button type="button" id="btn-jugar-de-nuevo">Jugar de nuevo</button>
+      <button type="button" id="btn-ver-ranking-victoria">Ver ranking</button>
+    </div>
+
+    <div id="modal-ranking" class="oculto">
+      <div>
+        <h2>Ranking de partidas</h2>
+
+        <label for="orden-ranking">Ordenar por:</label>
+        <select id="orden-ranking">
+          <option value="puntaje">Puntaje</option>
+          <option value="fecha">Fecha</option>
+          <option value="duracion">Duración</option>
+          <option value="nivel">Nivel</option>
+        </select>
+
+        <table id="tabla-ranking">
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>Puntaje</th>
+              <th>Nivel</th>
+              <th>Intentos</th>
+              <th>Errores</th>
+              <th>Duración</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-tabla-ranking"></tbody>
+        </table>
+
+        <p id="ranking-vacio" class="oculto">Todavía no hay partidas jugadas.</p>
+
+        <button type="button" id="btn-borrar-ranking">Borrar historial</button>
+        <button type="button" id="btn-cerrar-ranking">Cerrar</button>
+      </div>
+    </div>
+
+    <div id="modal-confirmar-borrado" class="oculto">
+      <div>
+        <p>¿Seguro que querés borrar todo el historial del ranking? Esto no se puede deshacer.</p>
+        <button type="button" id="btn-confirmar-borrado">Sí, borrar</button>
+        <button type="button" id="btn-cancelar-borrado">Cancelar</button>
+      </div>
     </div>
   </main>
 
@@ -61,10 +106,12 @@
     <p>Trabajo Práctico - Memotest</p>
   </footer>
 
+  <script src="js/sounds.js"></script>
   <script src="js/game.js"></script>
   <script src="js/validations.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/main.js"></script>
   <script src="js/tema.js"></script>
+  <script src="js/ranking.js"></script>
 </body>
 </html>
