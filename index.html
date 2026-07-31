@@ -14,8 +14,11 @@
     <nav>
       <a href="pages/contact.html">Contacto</a>
       <a href="https://github.com/JuanCarlini/memory-cards" target="_blank" rel="noopener">Repositorio en GitHub</a>
+      <a href="https://juancarlini.github.io/memory-cards/" target="_blank" rel="noopener">Ver en GitHub Pages</a>
     </nav>
-    <button type="button" id="btn-tema">Modo oscuro</button>
+    <div class="header-acciones">
+      <button type="button" id="btn-tema">Modo oscuro</button>
+    </div>
   </header>
 
   <main>
@@ -28,7 +31,7 @@
         <select id="dificultad" class="campo">
           <option value="facil">Fácil (16 cartas)</option>
           <option value="medio">Medio (20 cartas)</option>
-          <option value="dificil">Difícil (18 cartas)</option>
+          <option value="dificil">Difícil (36 cartas)</option>
         </select>
 
         <p id="error-inicio" class="mensaje-error oculto" role="alert"></p>
@@ -43,7 +46,9 @@
         <span id="tiempo">Tiempo: 0</span>
         <span id="intentos">Intentos: 0</span>
         <span id="errores">Errores: 0</span>
+        <span id="pares">Pares: 0/0</span>
         <button id="btn-reiniciar" type="button">Reiniciar</button>
+        <button id="btn-cambiar-jugador" type="button">Cambiar jugador</button>
       </section>
 
       <section id="tablero">
