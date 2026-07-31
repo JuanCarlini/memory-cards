@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var pantallaJuego = document.getElementById('pantalla-juego');
   var btnReiniciar = document.getElementById('btn-reiniciar');
   var btnJugarDeNuevo = document.getElementById('btn-jugar-de-nuevo');
+  var btnCambiarJugador = document.getElementById('btn-cambiar-jugador');
   var btnSonido = document.getElementById('btn-sonido');
 
   function mostrarError(mensaje) {
@@ -33,6 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
+  function manejarReinicio() {
+    Juego.iniciarJuego();
+  }
+
+  function volverAInicio() {
+    Juego.detenerJuego();
+    pantallaJuego.classList.add('oculto');
+    pantallainicio.classList.remove('oculto');
+  }
+
   formInicio.addEventListener('submit', function (evento) {
     var nombre = document.getElementById('nombre-jugador').value.trim();
     evento.preventDefault();
@@ -42,17 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
     Juego.iniciarJuego(nombre);
   });
 
-  function manejarReinicio() {
-    Juego.iniciarJuego();
-  }
-
   btnReiniciar.addEventListener('click', manejarReinicio);
-
   btnJugarDeNuevo.addEventListener('click', manejarReinicio);
+  btnCambiarJugador.addEventListener('click', volverAInicio);
 
   // prende/apaga los sonidos y actualiza el texto del boton para que se vea el estado actual
   btnSonido.addEventListener('click', function () {
     var activos = Sonidos.alternarActivos();
-    btnSonido.textContent = activos ? '🔊 Sonido activado' : '🔇 Sonido desactivado';
+    btnSonido.textContent = activos ? 'Sonido activado' : 'Sonido desactivado';
   });
 });
