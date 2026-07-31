@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var btnReiniciar = document.getElementById('btn-reiniciar');
   var btnJugarDeNuevo = document.getElementById('btn-jugar-de-nuevo');
   var btnCambiarJugador = document.getElementById('btn-cambiar-jugador');
+  var btnSonido = document.getElementById('btn-sonido');
 
   function mostrarError(mensaje) {
     errorInicio.textContent = mensaje;
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return false;
     }
 
+    // chequeo extra por si algun dia agregan un nivel sin cargar suficientes banderas
     if (!Juego.hayCartasSuficientes(dificultad)) {
       mostrarError('No hay suficientes cartas cargadas para este nivel.');
       return false;
@@ -54,4 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
   btnReiniciar.addEventListener('click', manejarReinicio);
   btnJugarDeNuevo.addEventListener('click', manejarReinicio);
   btnCambiarJugador.addEventListener('click', volverAInicio);
+
+  // prende/apaga los sonidos y actualiza el texto del boton para que se vea el estado actual
+  btnSonido.addEventListener('click', function () {
+    var activos = Sonidos.alternarActivos();
+    btnSonido.textContent = activos ? 'Sonido activado' : 'Sonido desactivado';
+  });
 });
